@@ -5,11 +5,18 @@ import json
 import re
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 
-# Configure API key - better to use environment variables
-key = 'AIzaSyDOWWDQ8IPCmbfDfag19mvuI4YiJY6o6lc'  # Replace with your actual Gemini API key
+# Configure API key - use environment variables for security
+key = os.getenv('GEMINI_API_KEY')  # Get API key from environment variable
+if not key:
+    raise ValueError("API key not found. Set GEMINI_API_KEY as an environment variable.")
+
 genai.configure(api_key=key)
 
 # Configure model
@@ -129,4 +136,3 @@ def clear_history():
 
 if __name__ == '__main__':
     app.run(debug=False)  # Change this from True to False
-
